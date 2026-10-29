@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fedena — School management, in one place</title>
+  <meta name="description" content="Fedena is school management software for admissions, attendance, timetables, exams, fees, and parent communication — on the web and in the mobile app.">
+  <link rel="canonical" href="https://fedena.com/">
+  <style>
+    :root {
+      --ink: #14233a;
+      --ink-soft: #3d4d63;
+      --paper: #f4f0e6;
+      --card: #fffdf8;
+      --line: #e2d9c8;
+      --teal: #0c7c72;
+      --teal-deep: #085e57;
+      --amber: #c56a2d;
+      --navy: #1b3358;
+      --shadow: 0 18px 40px rgba(20, 35, 58, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 480px at 90% -10%, rgba(12, 124, 114, 0.12), transparent 60%),
+        radial-gradient(900px 420px at -10% 20%, rgba(197, 106, 45, 0.1), transparent 55%),
+        var(--paper);
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    a { color: inherit; }
+
+    img { max-width: 100%; }
+
+    .skip {
+      position: absolute;
+      left: 1rem;
+      top: -3rem;
+      background: var(--ink);
+      color: white;
+      padding: 0.5rem 0.8rem;
+      z-index: 20;
+    }
+
+    .skip:focus { top: 1rem; }
+
+    .wrap {
+      width: min(1120px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(244, 240, 230, 0.88);
+      border-bottom: 1px solid rgba(226, 217, 200, 0.8);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      font-size: 1.15rem;
+    }
+
+    .mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(145deg, var(--teal), var(--navy));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible { color: var(--teal-deep); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 0.72rem 1.15rem;
+      font-weight: 650;
+      border: 1px solid transparent;
+    }
+
+    .btn:focus-visible,
+    .menu-btn:focus-visible,
+    .nav-links a:focus-visible {
+      outline: 3px solid rgba(12, 124, 114, 0.45);
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      background: var(--teal);
+      color: white;
+    }
+
+    .btn-primary:hover { background: var(--teal-deep); }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--line);
+      color: var(--ink);
+    }
+
+    .btn-ghost:hover { border-color: var(--ink); }
+
+    .menu-btn {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.45rem 0.65rem;
+      font: inherit;
+      color: var(--ink);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 4.2rem 0 3rem;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin: 0 0 0.8rem;
+      color: var(--teal-deep);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 { line-height: 1.15; }
+
+    h1 {
+      margin: 0 0 1rem;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 600;
+      font-size: clamp(2.3rem, 4.6vw, 4.1rem);
+      letter-spacing: -0.03em;
+    }
+
+    .lede {
+      margin: 0 0 1.6rem;
+      color: var(--ink-soft);
+      font-size: 1.12rem;
+      max-width: 38rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .fine {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+    }
+
+    .board {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }
+
+    .board-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.4rem 0.9rem;
+      color: var(--ink-soft);
+      font-size: 0.85rem;
+    }
+
+    .dots { display: flex; gap: 0.35rem; }
+
+    .dots span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #d8cfc0;
+    }
+
+    .dots span:first-child { background: #e07a3d; }
+    .dots span:nth-child(2) { background: #e2b15a; }
+    .dots span:nth-child(3) { background: #0c7c72; }
+
+    .grid-mini {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 0.75rem;
+    }
+
+    .panel {
+      background: #f8f4ec;
+      border-radius: 16px;
+      padding: 0.95rem;
+    }
+
+    .panel h3 {
+      margin: 0 0 0.7rem;
+      font-size: 0.95rem;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.6rem;
+      padding: 0.45rem 0;
+      border-top: 1px solid var(--line);
+      font-size: 0.88rem;
+    }
+
+    .pill {
+      background: rgba(12, 124, 114, 0.12);
+      color: var(--teal-deep);
+      border-radius: 999px;
+      padding: 0.1rem 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .stat {
+      background: var(--navy);
+      color: #f7f3ea;
+      border-radius: 16px;
+      padding: 0.9rem;
+    }
+
+    .stat strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.45rem;
+    }
+
+    .stat span { font-size: 0.8rem; color: #d5deea; }
+
+    section { padding: 1.5rem 0 3rem; }
+
+    .section-head {
+      max-width: 38rem;
+      margin-bottom: 1.6rem;
+    }
+
+    h2 {
+      margin: 0 0 0.6rem;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 600;
+    }
+
+    .section-head p { margin: 0; color: var(--ink-soft); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1.2rem 1.15rem 1.25rem;
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 0.8rem;
+      background: rgba(12, 124, 114, 0.12);
+      color: var(--teal-deep);
+      font-weight: 800;
+    }
+
+    .card h3 { margin: 0 0 0.4rem; font-size: 1.08rem; }
+
+    .card p { margin: 0; color: var(--ink-soft); font-size: 0.96rem; }
+
+    .roles {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 1.5rem;
+      align-items: start;
+      background: var(--navy);
+      color: #f6f2e9;
+      border-radius: 24px;
+      padding: 1.6rem;
+    }
+
+    .roles p { color: #d5deea; }
+
+    .role-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .role-list li {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 0.95rem;
+    }
+
+    .role-list strong { display: block; margin-bottom: 0.25rem; }
+
+    .role-list span { color: #d5deea; font-size: 0.92rem; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      counter-reset: step;
+    }
+
+    .step {
+      padding: 0.2rem 0.2rem 0.2rem 0;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step, decimal-leading-zero);
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--amber);
+      font-size: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .step h3 { margin: 0 0 0.35rem; }
+
+    .step p { margin: 0; color: var(--ink-soft); }
+
+    .cta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      background: linear-gradient(135deg, #0c7c72, #1b3358);
+      color: white;
+      border-radius: 24px;
+      padding: 1.8rem;
+    }
+
+    .cta p { margin: 0.4rem 0 0; color: rgba(255, 255, 255, 0.86); }
+
+    .cta .btn-primary {
+      background: white;
+      color: var(--navy);
+      flex-shrink: 0;
+    }
+
+    .cta .btn-primary:hover { background: #f4f0e6; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 1.4rem 0 2rem;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    footer a { color: var(--teal-deep); }
+
+    @media (max-width: 860px) {
+      .menu-btn { display: inline-flex; }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        left: 1rem;
+        right: 1rem;
+        top: 68px;
+        flex-direction: column;
+        align-items: flex-start;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 0.8rem;
+        box-shadow: var(--shadow);
+      }
+
+      .nav-links.open { display: flex; }
+
+      .hero,
+      .cards,
+      .roles,
+      .steps,
+      .grid-mini,
+      .stat-row {
+        grid-template-columns: 1fr;
+      }
+
+      .hero { padding-top: 2.4rem; }
+
+      .cta { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#top">
+        <span class="mark" aria-hidden="true">F</span>
+        Fedena
+      </a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+      <ul class="nav-links" id="nav">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#roles">Who it’s for</a></li>
+        <li><a href="#day">A school day</a></li>
+        <li><a class="btn btn-primary" href="https://fedena.com/">Visit Fedena</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap hero" id="top">
+      <div>
+        <p class="eyebrow">School management software</p>
+        <h1>Run the school day from one calm dashboard.</h1>
+        <p class="lede">
+          Fedena brings admissions, attendance, timetables, exams, fees, and family
+          communication into a single school management system — for administrators,
+          teachers, students, and parents.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://fedena.com/feature-tour">See the feature tour</a>
+          <a class="btn btn-ghost" href="#features">Browse what it covers</a>
+        </div>
+        <p class="fine">Web software plus a mobile app for Android and iOS.</p>
+      </div>
+
+      <aside class="board" aria-label="Sample school dashboard">
+        <div class="board-top">
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <span>Today · Grade 8</span>
+        </div>
+        <div class="grid-mini">
+          <div class="panel">
+            <h3>Morning timetable</h3>
+            <div class="row"><span>08:30 Mathematics</span><span class="pill">Room 12</span></div>
+            <div class="row"><span>09:20 English</span><span class="pill">Room 4</span></div>
+            <div class="row"><span>10:10 Science</span><span class="pill">Lab</span></div>
+          </div>
+          <div class="panel">
+            <h3>Attendance</h3>
+            <div class="row"><span>Present</span><strong>28</strong></div>
+            <div class="row"><span>Absent</span><strong>2</strong></div>
+            <div class="row"><span>Parents notified</span><span class="pill">Yes</span></div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><strong>Fees</strong><span>Reminders sent</span></div>
+          <div class="stat"><strong>Exams</strong><span>Gradebook ready</span></div>
+          <div class="stat"><strong>Events</strong><span>On the calendar</span></div>
+        </div>
+      </aside>
+    </div>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>The work schools already do, with less paper.</h2>
+          <p>Fedena’s modules follow the school year, from the first enquiry to the report card.</p>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <div class="icon" aria-hidden="true">Ad</div>
+            <h3>Student admission</h3>
+            <p>Track enquiries, keep admission details digital, and shape forms around how your school enrolls students.</p>
+          </article>
+          <article class="card">
+            <div class="icon" aria-hidden="true">At</div>
+            <h3>Timetable and attendance</h3>
+            <p>Assign subjects, rooms, and teachers, mark attendance, and give families a clear view of the day.</p>
+          </article>
+          <article class="card">
+            <div class="icon" aria-hidden="true">Ex</div>
+            <h3>Exams and gradebook</h3>
+            <p>Run examinations, calculate grades, and publish digital report cards students and parents can open.</p>
+          </article>
+          <article class="card">
+            <div class="icon" aria-hidden="true">Fe</div>
+            <h3>Fees</h3>
+            <p>Set fee structures, apply discounts or late fines, and see who still has a balance outstanding.</p>
+          </article>
+          <article class="card">
+            <div class="icon" aria-hidden="true">On</div>
+            <h3>Online classes</h3>
+            <p>Connect teaching to video tools such as Google Meet, Zoom, and BigBlueButton when class moves online.</p>
+          </article>
+          <article class="card">
+            <div class="icon" aria-hidden="true">Hr</div>
+            <h3>People and campus</h3>
+            <p>Cover staff and payroll alongside hostel, library, and transport when the school needs those modules.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="roles">
+      <div class="wrap">
+        <div class="roles">
+          <div>
+            <p class="eyebrow" style="color:#9dccc6">Who it’s for</p>
+            <h2>One school. A view for every role.</h2>
+            <p>Each person signs in to the work that belongs to them — academics, fees, announcements, or a child’s progress.</p>
+          </div>
+          <ul class="role-list">
+            <li><strong>Administrators</strong><span>Admissions, fees, reports, approvals, and the school calendar.</span></li>
+            <li><strong>Teachers</strong><span>Attendance, assignments, timetables, and the gradebook.</span></li>
+            <li><strong>Students</strong><span>Classes, homework, exam schedules, and results.</span></li>
+            <li><strong>Parents</strong><span>Attendance, fees, announcements, and more than one child on one account.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="day">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>A quieter school day.</h2>
+          <p>The same information moves from the office to the classroom to a parent’s phone.</p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <h3>Open the day</h3>
+            <p>Teachers see the timetable, mark attendance, and families get the update without a separate notice.</p>
+          </article>
+          <article class="step">
+            <h3>Teach and assess</h3>
+            <p>Assignments, online classes, and examinations stay attached to the batch they belong to.</p>
+          </article>
+          <article class="step">
+            <h3>Close the loop</h3>
+            <p>Results, fee reminders, and event notices reach the people who need them.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <h2>See Fedena for your institution.</h2>
+            <p>Explore the full module list on the official Fedena site, including the mobile app.</p>
+          </div>
+          <a class="btn btn-primary" href="https://fedena.com/">Go to fedena.com</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <span>A short introduction to Fedena school management software.</span>
+      <span>Official site: <a href="https://fedena.com/">fedena.com</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const button = document.querySelector(".menu-btn");
+    const nav = document.querySelector("#nav");
+    button.addEventListener("click", () => {
+      const open = nav.classList.toggle("open");
+      button.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("open");
+        button.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
+</body>
+</html>
